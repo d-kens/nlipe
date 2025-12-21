@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: nlipe
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/nlipe_db?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: nl!p3@r@@tdm!n
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    change-log: classpath:/db/changelog/changelog.xml
+    enabled: true
