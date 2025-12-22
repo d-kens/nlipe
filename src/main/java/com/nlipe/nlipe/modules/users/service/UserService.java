@@ -6,7 +6,6 @@ import com.nlipe.nlipe.modules.users.dto.CreateUserDto;
 import com.nlipe.nlipe.modules.users.entity.User;
 import com.nlipe.nlipe.modules.users.enums.Role;
 import com.nlipe.nlipe.modules.users.repository.UserRepository;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
