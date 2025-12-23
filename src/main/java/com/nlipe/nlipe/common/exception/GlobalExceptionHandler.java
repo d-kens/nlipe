@@ -3,6 +3,7 @@ package com.nlipe.nlipe.common.exception;
 import com.nlipe.nlipe.common.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,13 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorDto> handleUnreadableMessage() {
+        return ResponseEntity.badRequest().body(
+                new ErrorDto("invalid request body")
+        );
     }
 
     @ExceptionHandler(NotFoundException.class)
