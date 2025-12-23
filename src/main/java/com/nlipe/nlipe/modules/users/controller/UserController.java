@@ -4,6 +4,7 @@ import com.nlipe.nlipe.common.dto.ErrorDto;
 import com.nlipe.nlipe.common.dto.PaginationRequest;
 import com.nlipe.nlipe.common.dto.PagingResult;
 import com.nlipe.nlipe.common.exception.EmailAlreadyExistException;
+import com.nlipe.nlipe.modules.users.dto.ChangePasswordRequest;
 import com.nlipe.nlipe.modules.users.dto.CreateUserDto;
 import com.nlipe.nlipe.modules.users.dto.UserResponse;
 import com.nlipe.nlipe.modules.users.service.UserService;
@@ -29,9 +30,6 @@ public class UserController {
             @RequestParam(defaultValue = "DESC") Sort.Direction direction
     ) {
         PaginationRequest request = new PaginationRequest(page, size, sortField, direction);
-        System.out.println("************************************************************************");
-        System.out.println(request.toString());
-        System.out.println("************************************************************************");
         return userService.getAllUsers(request);
     }
 
@@ -50,9 +48,17 @@ public class UserController {
         return ResponseEntity.created(uri).body(response);
     }
 
+    @PostMapping("/{userId}/change-password")
+    public ResponseEntity<Void> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request
+    ) {
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(EmailAlreadyExistException.class)
