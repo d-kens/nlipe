@@ -1,13 +1,18 @@
 package com.nlipe.nlipe.modules.users.service;
 
+import com.nlipe.nlipe.common.dto.PaginationRequest;
+import com.nlipe.nlipe.common.dto.PagingResult;
 import com.nlipe.nlipe.common.exception.EmailAlreadyExistException;
 import com.nlipe.nlipe.common.exception.NotFoundException;
+import com.nlipe.nlipe.common.utils.PaginationUtils;
 import com.nlipe.nlipe.modules.users.dto.CreateUserDto;
 import com.nlipe.nlipe.modules.users.dto.UserResponse;
 import com.nlipe.nlipe.modules.users.entity.User;
 import com.nlipe.nlipe.modules.users.mapper.UserMapper;
 import com.nlipe.nlipe.modules.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +26,19 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAll().stream().map(userMapper::toResponse).toList();
+    public PagingResult<UserResponse> getAllUsers(PaginationRequest request) {
+        final Pageable pageable = PaginationUtils.getPageable(request);
+        final Page<User> users = userRepository.findAll(pageable);
+        final List<UserResponse> userResponses = users.stream().map(userMapper::toResponse).toList();
+
+        return new PagingResult<>(
+                userResponses,
+                users.getTotalPages(),
+                users.getTotalElements(),
+                users.getSize(),
+                users.getNumber(),
+                users.isEmpty()
+        );
     }
 
     public UserResponse getUser(Long userId) {

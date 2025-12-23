@@ -1,19 +1,19 @@
 package com.nlipe.nlipe.modules.users.controller;
 
 import com.nlipe.nlipe.common.dto.ErrorDto;
+import com.nlipe.nlipe.common.dto.PaginationRequest;
+import com.nlipe.nlipe.common.dto.PagingResult;
 import com.nlipe.nlipe.common.exception.EmailAlreadyExistException;
 import com.nlipe.nlipe.modules.users.dto.CreateUserDto;
 import com.nlipe.nlipe.modules.users.dto.UserResponse;
-import com.nlipe.nlipe.modules.users.entity.User;
 import com.nlipe.nlipe.modules.users.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +22,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserResponse> getAllUsers() {
-        return userService.getAllUsers();
+    public PagingResult<UserResponse> getAllUsers(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "DESC") Sort.Direction direction
+    ) {
+        PaginationRequest request = new PaginationRequest(page, size, sortField, direction);
+        System.out.println("************************************************************************");
+        System.out.println(request.toString());
+        System.out.println("************************************************************************");
+        return userService.getAllUsers(request);
     }
 
     @GetMapping("/{userId}")
