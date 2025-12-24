@@ -7,6 +7,7 @@ import com.nlipe.nlipe.common.exception.EmailAlreadyExistException;
 import com.nlipe.nlipe.common.exception.PasswordMismatchException;
 import com.nlipe.nlipe.modules.users.dto.ChangePasswordRequest;
 import com.nlipe.nlipe.modules.users.dto.CreateUserDto;
+import com.nlipe.nlipe.modules.users.dto.UpdateUserRequest;
 import com.nlipe.nlipe.modules.users.dto.UserResponse;
 import com.nlipe.nlipe.modules.users.service.UserService;
 import jakarta.validation.Valid;
@@ -56,6 +57,14 @@ public class UserController {
     ) {
         userService.changePassword(userId, request);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{userId}")
+    public UserResponse updateUser(
+            @PathVariable Long userId,
+            @RequestBody UpdateUserRequest request
+    ) {
+        return userService.updateUser(userId, request);
     }
 
     @DeleteMapping("/{userId}")

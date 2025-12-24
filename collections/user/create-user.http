@@ -2,9 +2,9 @@ POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-  "role": "user",
-  "email": "adikod@gmail.com",
+  "role": "ADMIN",
+  "email": "kappasa@gmail.com",
   "phone": "0707127309",
   "password": "D@!l@m3@123",
-  "userName": "adiko"
+  "userName": "kappaa"
 }

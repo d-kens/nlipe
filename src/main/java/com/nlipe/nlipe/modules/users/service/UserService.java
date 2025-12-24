@@ -8,8 +8,10 @@ import com.nlipe.nlipe.common.exception.PasswordMismatchException;
 import com.nlipe.nlipe.common.utils.PaginationUtils;
 import com.nlipe.nlipe.modules.users.dto.ChangePasswordRequest;
 import com.nlipe.nlipe.modules.users.dto.CreateUserDto;
+import com.nlipe.nlipe.modules.users.dto.UpdateUserRequest;
 import com.nlipe.nlipe.modules.users.dto.UserResponse;
 import com.nlipe.nlipe.modules.users.entity.User;
+import com.nlipe.nlipe.modules.users.enums.Role;
 import com.nlipe.nlipe.modules.users.mapper.UserMapper;
 import com.nlipe.nlipe.modules.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
 
     public PagingResult<UserResponse> getAllUsers(PaginationRequest request) {
         final Pageable pageable = PaginationUtils.getPageable(request);
@@ -51,14 +53,20 @@ public class UserService {
         return userMapper.toResponse(user);
     }
 
-    public UserResponse createUser(CreateUserDto createUserDto) {
+    public UserResponse createUser(CreateUserDto dto) {
 
-        if (userRepository.existsByEmail(createUserDto.getEmail())) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new EmailAlreadyExistException();
         }
 
-        User user = userMapper.toEntity(createUserDto);
-        user.setPasswordHash(passwordEncoder.encode(createUserDto.getPassword()));
+        User user = userMapper.toEntity(dto);
+
+        if (dto.getRole() == null)
+            user.setRole(Role.USER);
+        else
+            user.setRole(Role.valueOf(dto.getRole().trim().toUpperCase()));
+
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
 
         userRepository.save(user);
 
@@ -75,6 +83,21 @@ public class UserService {
 
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
+    }
+
+    public UserResponse updateUser(Long userId, UpdateUserRequest request) {
+        var user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("user with id " + userId + " not found")
+        );
+
+        if (userRepository.existsByEmailAndIdNot(request.getEmail(), userId))
+            throw new EmailAlreadyExistException();
+
+        userMapper.update(request, user);
+
+        userRepository.save(user);
+
+        return userMapper.toResponse(user);
     }
 
     public void deleteUser(Long userId) {
