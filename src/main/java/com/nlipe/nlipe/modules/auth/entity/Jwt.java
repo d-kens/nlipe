@@ -30,13 +30,6 @@ public class Jwt {
         return Role.valueOf(claims.get("role", String.class));
     }
 
-    /**
-     * Turn a Jwt object into a Jwt string that can be sent to clients
-            - Create a Jwt Builder
-            - Attach the claims (payload): These include sub (userID), role, expiry, etc
-            - Sign the Jwt: Use a cryptographic key
-            - Compact the Jwt into a string
-     */
     public String toString() {
         return Jwts.builder().claims(claims).signWith(secretKey).compact();
     }
