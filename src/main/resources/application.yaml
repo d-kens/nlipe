@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/peid_db?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: nl!p3@r@@tdm!n
+    password: p3!D@r@@tdm!n
 
   jpa:
     show-sql: true
