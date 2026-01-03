@@ -4,7 +4,7 @@ services:
     container_name: mysql-service
     environment:
       MYSQL_ROOT_PASSWORD: nl!p3@r@@tdm!n
-      MYSQL_DATABASE: nlipe_db
+      MYSQL_DATABASE: peid_db
     ports:
       - "3306:3306"
     volumes:

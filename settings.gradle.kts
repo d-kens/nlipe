@@ -1,1 +1,1 @@
-rootProject.name = "nlipe"
+rootProject.name = "peid"

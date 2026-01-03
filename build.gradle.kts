@@ -4,9 +4,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "com.nlipe"
+group = "com.peid"
 version = "0.0.1-SNAPSHOT"
-description = "nlipe"
+description = "peid"
 
 java {
     toolchain {
