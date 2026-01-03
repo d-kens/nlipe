@@ -5,8 +5,8 @@ plugins {
 }
 
 group = "com.peid"
-version = "0.0.1-SNAPSHOT"
-description = "peid"
+version = "0.0.1"
+description = "spring-boot api for generating shareable payment links and processing payments"
 
 java {
     toolchain {

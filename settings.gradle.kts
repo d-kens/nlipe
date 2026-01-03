@@ -1,1 +1,1 @@
-rootProject.name = "peid"
+rootProject.name = "peid-api"
